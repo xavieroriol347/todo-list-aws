@@ -91,7 +91,7 @@ sam local start-api --port 8081 --env-vars localEnvironment.json --docker-networ
 
 Se pueden consultar en CloudWath o ejecutando un comando similar al siguiente:
 ```bash
-sam logs -n GetTodoFunction --stack-name todo-list-aws-staging
+sam logs -n GetTodoFunction --stack-name todo-list-aws
 ```
 
 ## Tests
