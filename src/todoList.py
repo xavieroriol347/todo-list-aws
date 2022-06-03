@@ -6,18 +6,15 @@ import json
 import functools
 from botocore.exceptions import ClientError
 
+
 def get_table(dynamodb=None):
     if not dynamodb:
         REGION = 'us-east-1'
         URL = os.environ['ENDPOINT_OVERRIDE']
         if URL:
             print('URL dynamoDB:' + URL)
-            boto3.client = functools.partial(boto3.client,
-                                endpoint_url=URL,
-                                region_name=REGION)
-            boto3.resource = functools.partial(boto3.resource,
-                                endpoint_url=URL,
-                                region_name=REGION)
+            boto3.client = functools.partial(boto3.client, endpoint_url=URL, region_name=REGION)
+            boto3.resource = functools.partial(boto3.resource, endpoint_url=URL, region_name=REGION)
         dynamodb = boto3.resource("dynamodb")
     # fetch todo from the database
     table = dynamodb.Table(os.environ['DYNAMODB_TABLE'])
@@ -80,17 +77,9 @@ def update_item(key, text, checked, dynamodb=None):
     # update the todo in the database
     try:
         result = table.update_item(
-            Key={
-                'id': key
-            },
-            ExpressionAttributeNames={
-                                      '#todo_text': 'text',
-            },
-            ExpressionAttributeValues={
-                                       ':text': text,
-                                       ':checked': checked,
-                                       ':updatedAt': timestamp,
-            },
+            Key={'id': key},
+            ExpressionAttributeNames={'#todo_text': 'text', },
+            ExpressionAttributeValues={':text': text, ':checked': checked, ':updatedAt': timestamp, },
             UpdateExpression='SET #todo_text = :text, '
                              'checked = :checked, '
                              'updatedAt = :updatedAt',
